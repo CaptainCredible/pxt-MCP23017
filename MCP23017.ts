@@ -49,9 +49,16 @@ namespace MCP23017 {
     }
 
     //% block
-    export function setOutputA(bit: number){
+    export function setOutputA(bit: number) {
         outputABuffer = outputABuffer | (1 << bit)
-    } 
+    }
+
+    //% block
+    export function clearOutputA(bit: number) {
+        let tempMask = 1 << bit
+        tempMask = tempMask ^ 0B11111111
+        outputABuffer = outputABuffer & tempMask
+    }
 
     //% block
     export function updateOutputAOn(adress: ADDRESS) {
@@ -59,20 +66,27 @@ namespace MCP23017 {
     }
 
     //% block 
-    export function clearOutputABuffer(){
+    export function clearOutputABuffer() {
         outputABuffer = 0
     }
-    
+
     //% block
     export function setOutputB(bit: number) {
         outputABuffer = outputBBuffer | (1 << bit)
     }
 
     //% block
+    export function clearOutputB(bit: number) {
+        let tempMask = 1 << bit
+        tempMask = tempMask ^ 0B11111111
+        outputBBuffer = outputBBuffer & tempMask
+    }
+
+    //% block
     export function updateOutputBOn(adress: ADDRESS) {
         writeNumberToPort(adress, 4608, outputBBuffer)
-    } 
-        
+    }
+
     //% block
     export function clearOutputBBuffer() {
         outputBBuffer = 0
