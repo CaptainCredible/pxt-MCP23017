@@ -13,7 +13,7 @@ enum REG_PIO {
     //% block=PORT_A
     A = 4608,
     //% block=PORT_B
-    B = 4609
+    B = 4864
 }
 enum ADDRESS {                     // address for MCP23017 (configurable by tying pins 15,16,17 on the mcp23017 high or low)
     //% block=0x20
