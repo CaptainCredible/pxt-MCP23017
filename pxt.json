@@ -1,0 +1,13 @@
+{
+    "name": "MCP23017",
+    "version": "0.0.1",
+    "dependencies": {
+        "core": "*"
+    },
+    "description": "Blocks to control the MCP23017",
+    "files": [
+        "MCP23017.ts",
+        "README.md"
+    ],
+    "public": true
+}
