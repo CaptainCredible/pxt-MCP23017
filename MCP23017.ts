@@ -1,6 +1,10 @@
+
 /**
- *  MCP23017 control blocks
+ *  MCP23017-control blocks
  */
+
+let outputABuffer = 0;
+let outputBBuffer = 0;
 
 enum SET_PORT {
     //% block=PORT_A
@@ -40,18 +44,47 @@ enum ADDRESS {                     // address for MCP23017 (configurable by tyin
 "//% weight=100 color=#0fbc12 icon="
 namespace MCP23017 {
     //% block
-    export function clearAllOuputsOn(adress: ADDRESS, port: REG_PIO){
+    export function clearAllOuputsOn(adress: ADDRESS, port: REG_PIO) {
         pins.i2cWriteNumber(adress, port + 0, NumberFormat.UInt16BE)
     }
 
+    //% block
+    export function setOutputA(bit: number){
+        outputABuffer = outputABuffer | (1 << bit)
+    } 
 
     //% block
-    export function setOutputs(adress: ADDRESS, port: REG_PIO, value: number) {
+    export function updateOutputAOn(adress: ADDRESS) {
+        writeNumberToPort(adress, 4608, outputABuffer)
+    }
+
+    //% block 
+    export function clearOutputABuffer(){
+        outputABuffer = 0
+    }
+    
+    //% block
+    export function setOutputB(bit: number) {
+        outputABuffer = outputBBuffer | (1 << bit)
+    }
+
+    //% block
+    export function updateOutputBOn(adress: ADDRESS) {
+        writeNumberToPort(adress, 4608, outputBBuffer)
+    } 
+        
+    //% block
+    export function clearOutputBBuffer() {
+        outputBBuffer = 0
+    }
+
+    //% block
+    export function writeNumberToPort(adress: ADDRESS, port: REG_PIO, value: number) {
         pins.i2cWriteNumber(adress, port + value, NumberFormat.UInt16BE)
     }
 
     //% block
-    export function setAsOutput(adress: ADDRESS, port: SET_PORT) {
+    export function setPortAsOutput(adress: ADDRESS, port: SET_PORT) {
         pins.i2cWriteNumber(adress, port + 0x00, NumberFormat.UInt16BE)
     }
 
