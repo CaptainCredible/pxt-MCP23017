@@ -84,7 +84,7 @@ namespace MCP23017 {
 
     //% block
     export function updateOutputBOn(adress: ADDRESS) {
-        writeNumberToPort(adress, 4608, outputBBuffer)
+        writeNumberToPort(adress, 4864, outputBBuffer)
     }
 
     //% block
