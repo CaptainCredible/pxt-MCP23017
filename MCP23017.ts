@@ -72,7 +72,7 @@ namespace MCP23017 {
 
     //% block
     export function setOutputB(bit: number) {
-        outputABuffer = outputBBuffer | (1 << bit)
+        outputBBuffer = outputBBuffer | (1 << bit)
     }
 
     //% block
