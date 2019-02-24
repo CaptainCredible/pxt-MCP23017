@@ -9,5 +9,6 @@
         "MCP23017.ts",
         "README.md"
     ],
-    "public": true
+    "public": true,
+    "installedVersion": "workspace:23335a7d-806e-4678-9d9a-1e447a168ea8"
 }

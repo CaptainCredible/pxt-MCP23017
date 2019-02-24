@@ -49,6 +49,13 @@ namespace MCP23017 {
     }
 
     //% block
+    export function setAllOuputsOn(adress: ADDRESS, port: REG_PIO) {
+        pins.i2cWriteNumber(adress, port + 0B11101111, NumberFormat.UInt16BE)
+    }
+
+
+
+    //% block
     export function setOutputA(bit: number) {
         outputABuffer = outputABuffer | (1 << bit)
     }
@@ -68,6 +75,11 @@ namespace MCP23017 {
     //% block 
     export function clearOutputABuffer() {
         outputABuffer = 0
+    }
+
+    //% block 
+    export function fillOutputABuffer() {
+        outputABuffer = 0B11111111
     }
 
     //% block
@@ -90,6 +102,11 @@ namespace MCP23017 {
     //% block
     export function clearOutputBBuffer() {
         outputBBuffer = 0
+    }
+
+    //% block
+    export function fillOutputBBuffer() {
+        outputBBuffer = 0B11111111
     }
 
     //% block
