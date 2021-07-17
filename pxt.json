@@ -1,14 +1,21 @@
 {
     "name": "MCP23017",
     "version": "0.0.3",
+    "description": "Blocks to control the MCP23017",
     "dependencies": {
         "core": "*"
     },
-    "description": "Blocks to control the MCP23017",
     "files": [
         "MCP23017.ts",
         "README.md"
     ],
     "public": true,
-    "installedVersion": "workspace:23335a7d-806e-4678-9d9a-1e447a168ea8"
+    "targetVersions": {
+        "target": "4.0.9",
+        "targetId": "microbit"
+    },
+    "supportedTargets": [
+        "microbit"
+    ],
+    "preferredEditor": "tsprj"
 }

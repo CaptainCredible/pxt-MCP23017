@@ -19,6 +19,11 @@ enum REG_PIO {
     //% block=PORT_B
     B = 4864
 }
+ 
+let pulseLength = [10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10]
+let onTimes = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+let isOn = [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]
+
 enum ADDRESS {                     // address for MCP23017 (configurable by tying pins 15,16,17 on the mcp23017 high or low)
     //% block=0x20
     A20 = 0x20,               // 
@@ -38,22 +43,59 @@ enum ADDRESS {                     // address for MCP23017 (configurable by tyin
     A27 = 0x27                // 
 }
 
+let myMCP23017Address = ADDRESS.A20
+
+
+
 /**
  * Blocks
  */
 "//% weight=100 color=#0fbc12 icon="
 namespace MCP23017 {
     //% block
-    export function clearAllOuputsOn(adress: ADDRESS, port: REG_PIO) {
-        pins.i2cWriteNumber(adress, port + 0, NumberFormat.UInt16BE)
+    export function clearAllOuputsOn(port: REG_PIO) {
+        pins.i2cWriteNumber(myMCP23017Address, port + 0, NumberFormat.UInt16BE)
     }
 
     //% block
-    export function setAllOuputsOn(adress: ADDRESS, port: REG_PIO) {
-        pins.i2cWriteNumber(adress, port + 0B11101111, NumberFormat.UInt16BE)
+    export function setAllOuputsOn(port: REG_PIO) {
+        pins.i2cWriteNumber(myMCP23017Address, port + 0B11101111, NumberFormat.UInt16BE)
     }
 
+    //% block
+    export function setPulseLength(output: number, milliseconds: number) {
+        pulseLength[output] = milliseconds
+    }
+    
+    //% block
+    export function setMCP23017Address(address: ADDRESS) {
+        myMCP23017Address = address
+    }
 
+    //% block
+    export function setAllPulseLengthsTo(milliseconds: number) {
+        pulseLength = [milliseconds, milliseconds, milliseconds, milliseconds, milliseconds, milliseconds, milliseconds, milliseconds, milliseconds, milliseconds, milliseconds, milliseconds, milliseconds, milliseconds, milliseconds, milliseconds, milliseconds]
+    }
+    //% block
+    export function pulseOutput(output: number) {
+        control.inBackground(function() {
+            if(output < 8){
+                setOutputA(output)
+                updateOutputA()
+            } else {
+                setOutputB(output-8)
+                updateOutputB()
+            }
+            basic.pause(pulseLength[output])
+            if (output < 8) {
+                clearOutputA(output)
+                updateOutputA()
+            } else {
+                clearOutputB(output - 8)
+                updateOutputB()
+            }
+        })
+    }
 
     //% block
     export function setOutputA(bit: number) {
@@ -68,8 +110,8 @@ namespace MCP23017 {
     }
 
     //% block
-    export function updateOutputAOn(adress: ADDRESS) {
-        writeNumberToPort(adress, 4608, outputABuffer)
+    export function updateOutputA() {
+        writeNumberToPort(4608, outputABuffer)
     }
 
     //% block 
@@ -95,8 +137,8 @@ namespace MCP23017 {
     }
 
     //% block
-    export function updateOutputBOn(adress: ADDRESS) {
-        writeNumberToPort(adress, 4864, outputBBuffer)
+    export function updateOutputB() {
+        writeNumberToPort(4864, outputBBuffer)
     }
 
     //% block
@@ -110,24 +152,24 @@ namespace MCP23017 {
     }
 
     //% block
-    export function writeNumberToPort(adress: ADDRESS, port: REG_PIO, value: number) {
-        pins.i2cWriteNumber(adress, port + value, NumberFormat.UInt16BE)
+    export function writeNumberToPort(port: REG_PIO, value: number) {
+        pins.i2cWriteNumber(myMCP23017Address, port + value, NumberFormat.UInt16BE)
     }
 
     //% block
-    export function setPortAsOutput(adress: ADDRESS, port: SET_PORT) {
-        pins.i2cWriteNumber(adress, port + 0x00, NumberFormat.UInt16BE)
+    export function setPortAsOutput(port: SET_PORT) {
+        pins.i2cWriteNumber(myMCP23017Address, port + 0x00, NumberFormat.UInt16BE)
     }
 
     //% block
-    export function readRegister(addr: ADDRESS, reg: REG_PIO): number {
-        pins.i2cWriteNumber(addr, reg, NumberFormat.Int8LE);
-        return pins.i2cReadNumber(addr, NumberFormat.Int8LE)
+    export function readRegister(reg: REG_PIO): number {
+        pins.i2cWriteNumber(myMCP23017Address, reg, NumberFormat.Int8LE);
+        return pins.i2cReadNumber(myMCP23017Address, NumberFormat.Int8LE)
     }
 
     //% block
-    export function ReadNotAnd(addr: ADDRESS, reg: REG_PIO, value: number): boolean {
-        return (!(readRegister(addr, reg) & value))
+    export function ReadNotAnd(reg: REG_PIO, value: number): boolean {
+        return (!(readRegister(reg) & value))
     }
 
 }
