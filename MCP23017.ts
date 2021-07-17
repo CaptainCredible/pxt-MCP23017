@@ -53,11 +53,13 @@ let myMCP23017Address = ADDRESS.A20
 "//% weight=100 color=#0fbc12 icon="
 namespace MCP23017 {
     //% block
+    //% advanced = true
     export function clearAllOuputsOn(port: REG_PIO) {
         pins.i2cWriteNumber(myMCP23017Address, port + 0, NumberFormat.UInt16BE)
     }
 
     //% block
+    //% advanced = true
     export function setAllOuputsOn(port: REG_PIO) {
         pins.i2cWriteNumber(myMCP23017Address, port + 0B11101111, NumberFormat.UInt16BE)
     }
@@ -68,8 +70,10 @@ namespace MCP23017 {
     }
     
     //% block
-    export function setMCP23017Address(address: ADDRESS) {
+    export function setupSimplePulsingOnAddress(address: ADDRESS) {
         myMCP23017Address = address
+        setPortAsOutput(SET_PORT.A)
+        setPortAsOutput(SET_PORT.B)
     }
 
     //% block
@@ -98,11 +102,13 @@ namespace MCP23017 {
     }
 
     //% block
+    //% advanced = true
     export function setOutputA(bit: number) {
         outputABuffer = outputABuffer | (1 << bit)
     }
 
     //% block
+    //% advanced = true
     export function clearOutputA(bit: number) {
         let tempMask = 1 << bit
         tempMask = tempMask ^ 0B11111111
@@ -110,26 +116,31 @@ namespace MCP23017 {
     }
 
     //% block
+    //% advanced = true
     export function updateOutputA() {
         writeNumberToPort(4608, outputABuffer)
     }
 
-    //% block 
+    //% block
+    //% advanced = true
     export function clearOutputABuffer() {
         outputABuffer = 0
     }
 
-    //% block 
+    //% block
+    //% advanced = true
     export function fillOutputABuffer() {
         outputABuffer = 0B11111111
     }
 
     //% block
+    //% advanced = true
     export function setOutputB(bit: number) {
         outputBBuffer = outputBBuffer | (1 << bit)
     }
 
     //% block
+    //% advanced = true
     export function clearOutputB(bit: number) {
         let tempMask = 1 << bit
         tempMask = tempMask ^ 0B11111111
@@ -137,37 +148,44 @@ namespace MCP23017 {
     }
 
     //% block
+    //% advanced = true
     export function updateOutputB() {
         writeNumberToPort(4864, outputBBuffer)
     }
 
     //% block
+    //% advanced = true
     export function clearOutputBBuffer() {
         outputBBuffer = 0
     }
 
     //% block
+    //% advanced = true
     export function fillOutputBBuffer() {
         outputBBuffer = 0B11111111
     }
 
     //% block
+    //% advanced = true
     export function writeNumberToPort(port: REG_PIO, value: number) {
         pins.i2cWriteNumber(myMCP23017Address, port + value, NumberFormat.UInt16BE)
     }
 
     //% block
+    //% advanced = true
     export function setPortAsOutput(port: SET_PORT) {
         pins.i2cWriteNumber(myMCP23017Address, port + 0x00, NumberFormat.UInt16BE)
     }
 
     //% block
+    //% advanced = true
     export function readRegister(reg: REG_PIO): number {
         pins.i2cWriteNumber(myMCP23017Address, reg, NumberFormat.Int8LE);
         return pins.i2cReadNumber(myMCP23017Address, NumberFormat.Int8LE)
     }
 
     //% block
+    //% advanced = true
     export function ReadNotAnd(reg: REG_PIO, value: number): boolean {
         return (!(readRegister(reg) & value))
     }
